@@ -1,6 +1,8 @@
   ## About The Project
   This is an Apartment listing webapp that's made using Node.JS, Express, Typescript, Next.js, and SQL Server. This is the app frontend repo. It's made using React Native / Expo. And here's the [Backend](https://github.com/aliaboshady/nawy-backend) repo and the [Web](https://github.com/aliaboshady/nawy-frontend-web) frontend repo.
   
+  **The phone app was tested on an Android only, as I don't own a mac or an iPhone!**
+  
   In this project, I've learned so much in so little time. I'm very proud to have learned Node.JS, Express, Typescript, Next.js, and React Native in as little as 2 days.
   
   ## Completed Features
