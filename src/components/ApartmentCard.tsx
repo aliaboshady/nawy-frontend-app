@@ -1,20 +1,19 @@
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { Apartment } from '../types/index';
-import { formatAsCurrency } from '../utils/helpers';
+import { formatAsCurrency, binaryImageToURL } from '../utils/helpers';
 
 interface ApartmentCardProps {
-  apartment?: Apartment;
+  apartment: Apartment;
 }
 
 export default function ApartmentCard({ apartment }: ApartmentCardProps) {
+  const imageURL = binaryImageToURL(apartment.Image);
+
   return (
     <View style={styles.outerMargin}>
       <View style={styles.main}>
         <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={require('../../assets/house.jpg')}
-          />
+          <Image style={styles.image} source={{ uri: imageURL }} />
         </View>
 
         <View style={styles.info}>
