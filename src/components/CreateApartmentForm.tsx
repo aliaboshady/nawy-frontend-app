@@ -11,7 +11,7 @@ import {
 import ModalBotton from './ModalBotton';
 
 export default function CreateApartmentForm() {
-  const API_CreateApartments = 'http://10.0.2.2:5000/apartment/create';
+  const API_CreateApartments = 'http://10.0.2.2:5000/apartment';
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
