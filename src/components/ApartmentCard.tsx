@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderWidth: 0.2,
     borderRadius: 4,
+    backgroundColor: 'white',
   },
 
   imageContainer: {

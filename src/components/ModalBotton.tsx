@@ -2,11 +2,9 @@ import { StyleSheet, Image, Pressable } from 'react-native';
 
 export default function ModalBotton({
   type,
-  isFormOpen,
   onClick,
 }: {
   type: string;
-  isFormOpen: boolean;
   onClick: any;
 }) {
   return (

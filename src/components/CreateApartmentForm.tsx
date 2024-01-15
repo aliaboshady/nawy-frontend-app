@@ -27,6 +27,18 @@ export default function CreateApartmentForm() {
     setIsFormOpen((isFormOpenCurrent) => !isFormOpenCurrent);
   }
 
+  function resetForm() {
+    setTitle('');
+    setDescription('');
+    setAddress('');
+    setPrice(10000);
+    setSize(50);
+    setCountBeds(1);
+    setCountToilets(1);
+    setIsCreating(false);
+    setIsFormOpen(false);
+  }
+
   async function handleSubmit() {
     if (
       !title ||
@@ -61,6 +73,9 @@ export default function CreateApartmentForm() {
       body: JSON.stringify(newApartment),
     });
 
+    toggleForm();
+    resetForm();
+
     if (res.ok) {
       setIsCreating((isCreatingCurrent) => false);
       //REFRESH
@@ -72,7 +87,7 @@ export default function CreateApartmentForm() {
       <Modal animationType="fade" visible={isFormOpen} transparent={true}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            <ModalBotton type="closes" isFormOpen onClick={toggleForm} />
+            <ModalBotton type="closes" onClick={toggleForm} />
 
             <Text style={styles.modalTitle}>Create a new Apartment</Text>
 
@@ -158,9 +173,7 @@ export default function CreateApartmentForm() {
         </View>
       </Modal>
 
-      {!isFormOpen ? (
-        <ModalBotton type="opens" isFormOpen onClick={toggleForm} />
-      ) : null}
+      {!isFormOpen ? <ModalBotton type="opens" onClick={toggleForm} /> : null}
     </View>
   );
 }
