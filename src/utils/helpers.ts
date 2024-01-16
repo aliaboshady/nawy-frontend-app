@@ -5,7 +5,8 @@ export function formatAsCurrency(value: number) {
 }
 
 export function binaryImageToURL(Image: any) {
-  if (Image === null) return '';
+  if (!Image) return '';
+
   const base64Image = base64.fromByteArray(Image.data);
   const imageUrl = `data:image/jpeg;base64,${base64Image}`;
 

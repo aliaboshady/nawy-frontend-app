@@ -1,21 +1,36 @@
-import { StyleSheet, View } from 'react-native';
-import Hero from './src/components/Hero';
-import ApartmentsSection from './src/components/ApartmentsSection';
-import CreateApartmentForm from './src/components/CreateApartmentForm';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MainScreen from './src/screens/MainScreen';
+import ApartmentDetailsScreen from './src/screens/ApartmentDetailsScreen';
 
-export default function App() {
+export type RootStackParamList = {
+  MainScreen: undefined;
+  ApartmentDetailsScreen: { apartmentId: Number };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+function StackNavigator() {
   return (
-    <View style={styles.container}>
-      <Hero />
-      <ApartmentsSection />
-      <CreateApartmentForm />
-    </View>
+    <Stack.Navigator initialRouteName="MainScreen">
+      <Stack.Screen
+        name="MainScreen"
+        component={MainScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ApartmentDetailsScreen"
+        component={ApartmentDetailsScreen}
+      />
+    </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
+export default function App() {
+  return (
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
+  );
+}

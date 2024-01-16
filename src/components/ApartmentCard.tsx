@@ -1,17 +1,30 @@
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { StyleSheet, View, Image, Text, Pressable, Button } from 'react-native';
 import { Apartment } from '../types/index';
 import { formatAsCurrency, binaryImageToURL } from '../utils/helpers';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../App';
 
 interface ApartmentCardProps {
   apartment: Apartment;
 }
 
+export type StackNavigation = StackNavigationProp<RootStackParamList>;
+
 export default function ApartmentCard({ apartment }: ApartmentCardProps) {
+  const navigation = useNavigation<StackNavigation>();
   const imageURL = binaryImageToURL(apartment.Image);
 
   return (
     <View style={styles.outerMargin}>
-      <View style={styles.main}>
+      <Pressable
+        style={styles.main}
+        onPress={() =>
+          navigation.navigate('ApartmentDetailsScreen', {
+            apartmentId: apartment.ApartmentID,
+          })
+        }
+      >
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={{ uri: imageURL }} />
         </View>
@@ -61,7 +74,7 @@ export default function ApartmentCard({ apartment }: ApartmentCardProps) {
             {formatAsCurrency(Number(apartment?.Price)) + '  EGP'}
           </Text>
         </View>
-      </View>
+      </Pressable>
     </View>
   );
 }

@@ -11,7 +11,6 @@ export default function ApartmentsSection() {
   async function fetchData() {
     try {
       setIsRefreshing((isRefreshingCurrent) => true);
-
       const response = await fetch(API_Apartments);
 
       if (!response.ok) {
