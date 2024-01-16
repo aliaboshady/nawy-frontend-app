@@ -40,7 +40,7 @@
   SELECT * FROM Image
   ```
 
-  ### Authentication Setup
+  ### Network Authentication Setup
   1. Open SQL Server Managment Studio (SSMS).
   2. In the Object Explorer, find Security -> Logins, and press right click. Then press on New Login.
   3. Set the Login Name (username) to 'admin'.
