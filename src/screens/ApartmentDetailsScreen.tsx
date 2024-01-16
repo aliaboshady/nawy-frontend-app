@@ -1,9 +1,16 @@
-import { StyleSheet, View, Text, Image, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../App';
 import { binaryImageToURL, formatAsCurrency } from '../utils/helpers';
 import { useEffect, useState } from 'react';
-import { Apartment } from '../types';
+import { Apartment, ApartmentImage } from '../types';
 
 type ApartmentDetailsRouteProp = RouteProp<
   RootStackParamList,
@@ -15,14 +22,25 @@ export default function ApartmentDetailsScreen() {
   const apartmentId = route.params.apartmentId;
 
   const API_Apartments = `http://10.0.2.2:5000/apartment/${apartmentId}`;
+  const API_ApartmentsImages = `http://10.0.2.2:5000/apartment/images/${apartmentId}`;
   const [apartment, setApartment] = useState<Apartment | undefined>();
+  const [apartmentImages, setApartmentImages] = useState<
+    ApartmentImage[] | undefined
+  >();
+  const [imageIndex, setImageIndex] = useState(0);
 
   async function fetchData() {
     try {
-      const response = await fetch(API_Apartments);
-      if (response.ok) {
-        const data: Apartment[] = await response.json();
-        setApartment(data[0]);
+      const responseApartmentDetails = await fetch(API_Apartments);
+      const responseApartmentImages = await fetch(API_ApartmentsImages);
+
+      if (responseApartmentDetails.ok && responseApartmentImages.ok) {
+        const dataDetails: Apartment[] = await responseApartmentDetails.json();
+        const dataImages: ApartmentImage[] =
+          await responseApartmentImages.json();
+
+        setApartment(dataDetails[0]);
+        setApartmentImages(dataImages);
       } else {
         throw new Error('Failed to fetch data');
       }
@@ -35,6 +53,24 @@ export default function ApartmentDetailsScreen() {
     fetchData();
   }, []);
 
+  function changeImage(next: boolean) {
+    if (!apartmentImages) return;
+
+    if (next) {
+      if (imageIndex < apartmentImages?.length - 1) {
+        setImageIndex(imageIndex + 1);
+      } else {
+        setImageIndex(0);
+      }
+    } else {
+      if (imageIndex > 0) {
+        setImageIndex(imageIndex - 1);
+      } else {
+        setImageIndex(apartmentImages?.length - 1);
+      }
+    }
+  }
+
   return (
     <View style={styles.outerMargin}>
       {!apartment ? (
@@ -46,10 +82,41 @@ export default function ApartmentDetailsScreen() {
       ) : (
         <View style={styles.main}>
           <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={{ uri: binaryImageToURL(apartment?.Image) }}
-            />
+            {apartmentImages && apartmentImages.length > 0 ? (
+              <Image
+                style={styles.image}
+                source={{
+                  uri: binaryImageToURL(apartmentImages[imageIndex].Image),
+                }}
+              />
+            ) : null}
+
+            {apartmentImages && apartmentImages.length > 1 ? (
+              <View style={styles.imageButtonsContainer}>
+                <Pressable
+                  style={styles.previousButton}
+                  onPress={() => {
+                    changeImage(false);
+                  }}
+                >
+                  <Image
+                    style={styles.previousImage}
+                    source={require('../../assets/next.png')}
+                  />
+                </Pressable>
+                <Pressable
+                  style={styles.nextButton}
+                  onPress={() => {
+                    changeImage(true);
+                  }}
+                >
+                  <Image
+                    style={styles.nextImage}
+                    source={require('../../assets/next.png')}
+                  />
+                </Pressable>
+              </View>
+            ) : null}
           </View>
 
           <View style={styles.info}>
@@ -126,10 +193,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#e5e7eb',
     overflow: 'hidden',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+    flexDirection: 'row',
+    position: 'relative',
   },
 
   image: {
-    height: '100%',
+    flex: 1,
     aspectRatio: 1,
   },
 
@@ -214,5 +285,39 @@ const styles = StyleSheet.create({
 
   loadingSpinner: {
     marginTop: '50%',
+  },
+
+  imageButtonsContainer: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  nextButton: {
+    width: 80,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  nextImage: {
+    width: 40,
+    height: 40,
+  },
+
+  previousButton: {
+    width: 80,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  previousImage: {
+    width: 40,
+    height: 40,
+    transform: [{ rotate: '180deg' }],
   },
 });

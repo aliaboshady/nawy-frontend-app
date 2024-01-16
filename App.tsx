@@ -22,6 +22,7 @@ function StackNavigator() {
       <Stack.Screen
         name="ApartmentDetailsScreen"
         component={ApartmentDetailsScreen}
+        options={{ title: 'Apartment Details' }}
       />
     </Stack.Navigator>
   );
