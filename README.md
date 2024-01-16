@@ -83,6 +83,11 @@
   http://localhost:5000/apartment/:ID
   ```
 
+  GET - All Images for an Apartment by ID
+  ```sh
+  http://localhost:5000/apartment/images/:ID
+  ```
+
   POST - Create a new Apartment
   ```sh
   http://localhost:5000/apartment
